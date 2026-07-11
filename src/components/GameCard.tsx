@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { spacing, radius, shadows, TOUCH_MIN } from '../theme/spacing';
@@ -57,7 +57,11 @@ export default function GameCard({ game, onPlay }: GameCardProps) {
     >
       {/* Icon area */}
       <View style={[styles.iconArea, { backgroundColor: gameColor.bg }]}>
-        <Feather name={icon} size={36} color={gameColor.accent} />
+        {game.image ? (
+          <Image source={game.image} style={styles.gameImage} resizeMode="cover" />
+        ) : (
+          <Feather name={icon} size={36} color={gameColor.accent} />
+        )}
         {/* Player badge */}
         <View style={[styles.playerBadge, { backgroundColor: colors.accentPrimary }]}>
           <Feather name="users" size={10} color="white" />
@@ -101,10 +105,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   iconArea: {
-    height: 120,
+    height: 140,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    overflow: 'hidden',
+  },
+  gameImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
   playerBadge: {
     position: 'absolute',

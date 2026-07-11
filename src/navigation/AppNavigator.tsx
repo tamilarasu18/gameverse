@@ -10,6 +10,8 @@ import BingoScreen from '../games/Bingo/BingoScreen';
 import QuoridorScreen from '../games/Quoridor/QuoridorScreen';
 import DotsAndBoxesScreen from '../games/DotsAndBoxes/DotsAndBoxesScreen';
 import BattleshipScreen from '../games/Battleship/BattleshipScreen';
+import RPSScreen from '../games/RPS/RPSScreen';
+import HandCricketScreen from '../games/HandCricket/HandCricketScreen';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -19,6 +21,8 @@ export type RootStackParamList = {
   Quoridor: { roomId: string; isLocal: boolean };
   DotsAndBoxes: { roomId: string; isLocal: boolean };
   Battleship: { roomId: string; isLocal: boolean };
+  RPS: { roomId: string; isLocal: boolean };
+  HandCricket: { roomId: string; isLocal: boolean };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -56,6 +60,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Quoridor" component={QuoridorScreen} />
         <Stack.Screen name="DotsAndBoxes" component={DotsAndBoxesScreen} />
         <Stack.Screen name="Battleship" component={BattleshipScreen} />
+        <Stack.Screen name="RPS" component={RPSScreen} />
+        <Stack.Screen name="HandCricket" component={HandCricketScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -22,6 +22,7 @@ interface GameInfo {
   players: string;
   tags: string[];
   route: keyof RootStackParamList;
+  image?: any;
   disabled?: boolean;
 }
 
@@ -33,6 +34,7 @@ const GAMES: GameInfo[] = [
     players: '2 Players',
     tags: ['Strategy', 'Classic', 'Turn-based'],
     route: 'ConnectFour',
+    image: require('../../assets/games/connect_four_card.png'),
   },
   {
     id: 'bingo',
@@ -41,6 +43,7 @@ const GAMES: GameInfo[] = [
     players: '2 Players',
     tags: ['Luck', 'Pattern', 'Exciting'],
     route: 'Bingo',
+    image: require('../../assets/games/bingo_card.png'),
   },
   {
     id: 'quoridor',
@@ -49,6 +52,7 @@ const GAMES: GameInfo[] = [
     players: '2 Players',
     tags: ['Strategy', 'Maze', 'Tactics'],
     route: 'Quoridor',
+    image: require('../../assets/games/quoridor_card.png'),
   },
   {
     id: 'dots-and-boxes',
@@ -57,6 +61,7 @@ const GAMES: GameInfo[] = [
     players: '2 Players',
     tags: ['Logic', 'Classic', 'Casual'],
     route: 'DotsAndBoxes',
+    image: require('../../assets/games/dots_and_boxes_card.png'),
   },
   {
     id: 'battleship',
@@ -65,6 +70,25 @@ const GAMES: GameInfo[] = [
     players: '2 Players',
     tags: ['Strategy', 'Hidden-state', 'Combat'],
     route: 'Battleship',
+    image: require('../../assets/games/battleship_card.png'),
+  },
+  {
+    id: 'rps',
+    name: 'Rock Paper Scissors',
+    description: 'Classic best-of-5 simultaneous choice game. Lock in your choice and reveal!',
+    players: '2 Players',
+    tags: ['Classic', 'Simultaneous', 'Fast'],
+    route: 'RPS',
+    image: require('../../assets/games/rps_card.png'),
+  },
+  {
+    id: 'hand-cricket',
+    name: 'Hand Cricket',
+    description: 'Throw numbers 1-6. Score runs, but if you match the bowler, you are OUT!',
+    players: '2 Players',
+    tags: ['Sports', 'Simultaneous', 'Luck'],
+    route: 'HandCricket',
+    image: require('../../assets/games/hand_cricket_card.png'),
   },
   {
     id: 'coming-soon',
