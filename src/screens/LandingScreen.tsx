@@ -17,7 +17,7 @@ export default function LandingScreen({ navigation }: Props) {
   const { colors } = useTheme();
   const [showSetup, setShowSetup] = useState(false);
   const [name, setName] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0]);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(AVATARS[0]);
 
   const handleEnter = () => {
     if (player) {

@@ -182,15 +182,15 @@ export const PATTERNS = {
 };
 
 // Get a random pattern for gameplay
-export function getRandomPattern(excludeId) {
+export function getRandomPattern(excludeId?: string) {
   const keys = Object.keys(PATTERNS).filter(k => k !== excludeId && k !== 'blackout');
-  const key = keys[Math.floor(Math.random() * keys.length)];
+  const key = keys[Math.floor(Math.random() * keys.length)] as keyof typeof PATTERNS;
   return { id: key, ...PATTERNS[key] };
 }
 
 // Get pattern display grid (use first grid for display, any grid matches for checking)
-export function getPatternDisplayGrid(patternId) {
-  const pattern = PATTERNS[patternId];
+export function getPatternDisplayGrid(patternId: string) {
+  const pattern = PATTERNS[patternId as keyof typeof PATTERNS];
   if (!pattern) return null;
   return pattern.grids[0];
 }

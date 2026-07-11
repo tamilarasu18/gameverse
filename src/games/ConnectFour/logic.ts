@@ -12,7 +12,7 @@ export function createBoard() {
 }
 
 // Find the lowest empty row in a column
-export function getAvailableRow(board, col) {
+export function getAvailableRow(board: number[][], col: number): number {
   for (let row = ROWS - 1; row >= 0; row--) {
     if (board[row][col] === EMPTY) return row;
   }
@@ -20,7 +20,7 @@ export function getAvailableRow(board, col) {
 }
 
 // Drop a piece into a column, returns new board or null if invalid
-export function dropPiece(board, col, player) {
+export function dropPiece(board: number[][], col: number, player: number): number[][] | null {
   const row = getAvailableRow(board, col);
   if (row === -1) return null;
 
@@ -30,7 +30,7 @@ export function dropPiece(board, col, player) {
 }
 
 // Check for a winner, returns { winner, cells } or null
-export function checkWinner(board) {
+export function checkWinner(board: number[][]): { winner: number, cells: number[][] } | null {
   // Horizontal
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col <= COLS - 4; col++) {
@@ -99,7 +99,7 @@ export function checkWinner(board) {
 }
 
 // Check if board is completely full (draw)
-export function isBoardFull(board) {
+export function isBoardFull(board: number[][]): boolean {
   return board[0].every(cell => cell !== EMPTY);
 }
 

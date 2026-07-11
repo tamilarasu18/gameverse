@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { spacing, radius, shadows, TOUCH_MIN } from '../theme/spacing';
@@ -11,6 +10,7 @@ interface GameInfo {
   description: string;
   players: string;
   tags: string[];
+  image?: ImageSourcePropType;
   disabled?: boolean;
 }
 
