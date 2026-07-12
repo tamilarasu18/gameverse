@@ -22,11 +22,13 @@ interface GameCardProps {
 const GAME_ICONS: Record<string, keyof typeof Feather.glyphMap> = {
   'connect-four': 'target',
   'bingo': 'grid',
+  'tic-tac-toe': 'hash',
 };
 
 const GAME_COLORS: Record<string, { bg: string; accent: string }> = {
   'connect-four': { bg: 'rgba(200, 90, 90, 0.1)', accent: '#C85A5A' },
   'bingo': { bg: 'rgba(212, 160, 78, 0.1)', accent: '#D4A04E' },
+  'tic-tac-toe': { bg: 'rgba(90, 200, 200, 0.1)', accent: '#5AC8C8' },
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');

@@ -12,6 +12,7 @@ import DotsAndBoxesScreen from '../games/DotsAndBoxes/DotsAndBoxesScreen';
 import BattleshipScreen from '../games/Battleship/BattleshipScreen';
 import RPSScreen from '../games/RPS/RPSScreen';
 import HandCricketScreen from '../games/HandCricket/HandCricketScreen';
+import TicTacToeScreen from '../games/TicTacToe/TicTacToeScreen';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   Battleship: { roomId: string; isLocal: boolean };
   RPS: { roomId: string; isLocal: boolean };
   HandCricket: { roomId: string; isLocal: boolean };
+  TicTacToe: { roomId: string; isLocal: boolean };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -62,6 +64,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Battleship" component={BattleshipScreen} />
         <Stack.Screen name="RPS" component={RPSScreen} />
         <Stack.Screen name="HandCricket" component={HandCricketScreen} />
+        <Stack.Screen name="TicTacToe" component={TicTacToeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

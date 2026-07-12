@@ -91,13 +91,13 @@ const GAMES: GameInfo[] = [
     image: require('../../assets/games/hand_cricket_card.png'),
   },
   {
-    id: 'coming-soon',
-    name: 'More Games',
-    description: 'New games are being added regularly. Stay tuned!',
-    players: '',
-    tags: [],
-    route: 'Lobby',
-    disabled: true,
+    id: 'tic-tac-toe',
+    name: 'Tic Tac Toe',
+    description: 'Classic 3x3 grid game. Get three in a row to win!',
+    players: '2 Players',
+    tags: ['Classic', 'Logic', 'Quick'],
+    route: 'TicTacToe',
+    image: require('../../assets/games/tic_tac_toe_card.png'),
   },
 ];
 
