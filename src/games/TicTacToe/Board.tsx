@@ -15,7 +15,8 @@ interface BoardProps {
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const BOARD_SIZE = Math.min(SCREEN_WIDTH * 0.85, 340);
-const CELL_SIZE = (BOARD_SIZE - spacing.sm * 2 - spacing.sm * 2) / 3;
+// Subtract padding (spacing.sm * 2) and gaps (spacing.sm * 2), plus a little extra for borders and float rounding
+const CELL_SIZE = Math.floor((BOARD_SIZE - spacing.sm * 4 - 4) / 3);
 
 export default function Board({ board, onCellClick, winningCells, disabled }: BoardProps) {
   const { colors } = useTheme();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -112,11 +112,11 @@ export default function LobbyScreen({ navigation }: Props) {
     setSelectedGame(game);
   };
 
-  const handleRoomReady = (roomCode: string, isLocal: boolean) => {
+  const handleRoomReady = useCallback((roomCode: string, isLocal: boolean) => {
     if (!selectedGame) return;
     setSelectedGame(null);
     navigation.navigate(selectedGame.route as any, { roomId: isLocal ? 'local' : roomCode, isLocal });
-  };
+  }, [selectedGame, navigation]);
 
   const handleSignOut = () => {
     clearProfile();

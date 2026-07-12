@@ -113,11 +113,15 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
           if (data.status === 'waiting') {
             update(ref(database!, `rooms/${roomCodeRef.current}`), { status: 'playing' });
           }
+        } else {
+          setOpponent(null);
         }
         if (data.gameStateStr) {
           try { setGameState(JSON.parse(data.gameStateStr)); } catch (e) { setGameState(null); }
         } else if (data.gameState) {
           setGameState(data.gameState);
+        } else {
+          setGameState(null);
         }
         if (data.status === 'playing') setStatus('playing');
       });
@@ -171,6 +175,8 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
           try { setGameState(JSON.parse(data.gameStateStr)); } catch (e) { setGameState(null); }
         } else if (data.gameState) {
           setGameState(data.gameState);
+        } else {
+          setGameState(null);
         }
       });
 

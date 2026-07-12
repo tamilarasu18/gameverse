@@ -2,6 +2,8 @@
 
 **GameVerse** is a modern, cross-platform mobile application built with React Native and Expo. It serves as a multiplayer game hub where users can play classic board games either locally (pass-and-play) or online with friends in real-time.
 
+**🌐 Live Demo:** [Play GameVerse on the Web](https://gameverse-brown.vercel.app/)
+
 ## 🚀 How the App Starts & Works
 
 ### App Entry Point
