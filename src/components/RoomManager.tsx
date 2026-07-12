@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet, ActivityIndicator, Share } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { usePlayer } from '../context/PlayerContext';
@@ -21,6 +21,7 @@ export default function RoomManager({ gameType, gameName, onRoomReady, onCancel,
   const [mode, setMode] = useState<'select' | 'create' | 'join' | null>(null);
   const [joinCode, setJoinCode] = useState('');
   const [copied, setCopied] = useState(false);
+  const readyFiredRef = useRef(false);
 
   const { roomCode, status, error, createRoom, joinRoom, online } = multiplayer;
 
@@ -48,9 +49,14 @@ export default function RoomManager({ gameType, gameName, onRoomReady, onCancel,
     onRoomReady('LOCAL', true);
   };
 
-  if (status === 'playing' && mode === 'create') {
-    onRoomReady(roomCode, false);
-  }
+  // When the created room transitions to "playing" (opponent joined), hand off to
+  // the parent. Done in an effect — never during render — and guarded so it fires once.
+  useEffect(() => {
+    if (status === 'playing' && mode === 'create' && !readyFiredRef.current) {
+      readyFiredRef.current = true;
+      onRoomReady(roomCode, false);
+    }
+  }, [status, mode, roomCode, onRoomReady]);
 
   return (
     <Modal visible transparent animationType="fade" onRequestClose={onCancel}>

@@ -95,8 +95,35 @@ export default function BingoScreen({ route, navigation }: Props) {
         gamePhase: nextPhase
       };
 
-      if (isLocal) setGameState(newState);
-      else multiplayer.updateGameState(newState);
+      if (isLocal) {
+        setGameState(newState);
+      } else {
+        // Both players place numbers on their own board simultaneously during setup.
+        // Merge against the freshest server state so neither player's write is lost.
+        multiplayer.mergeGameState((prev: any) => {
+          const base = prev || currentState;
+          const board = boardNum === 1 ? base.board1 : base.board2;
+          const setupN = boardNum === 1 ? base.setupNum1 : base.setupNum2;
+          // Re-validate against the freshest state; drop the tap if it no longer applies.
+          if (base.gamePhase !== 'setup' || setupN > 25 || board[row][col].number !== null) return base;
+          const mergedBoard = placeNumber(board, row, col, setupN);
+          const mergedSetupNum = setupN + 1;
+          let mergedPhase = base.gamePhase;
+          if (boardNum === 1) {
+            if (mergedSetupNum > 25 && base.setupNum2 > 25) mergedPhase = 'playing';
+          } else {
+            if (mergedSetupNum > 25 && base.setupNum1 > 25) mergedPhase = 'playing';
+          }
+          return {
+            ...base,
+            board1: boardNum === 1 ? mergedBoard : base.board1,
+            board2: boardNum === 2 ? mergedBoard : base.board2,
+            setupNum1: boardNum === 1 ? mergedSetupNum : base.setupNum1,
+            setupNum2: boardNum === 2 ? mergedSetupNum : base.setupNum2,
+            gamePhase: mergedPhase,
+          };
+        });
+      }
 
     } else if (currentState.gamePhase === 'playing') {
       if (!isMyTurn('play', boardNum)) return;
@@ -189,7 +216,7 @@ export default function BingoScreen({ route, navigation }: Props) {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bgPrimary }]}>
       <GameHeader
-        gameName="Custom Bingo"
+        gameName="Pattern Bingo"
         player1={player1}
         player2={player2}
         currentTurn={currentState.currentPlayer}

@@ -107,7 +107,7 @@ export default function RPSScreen({ route, navigation }: Props) {
 
   const handleLeave = () => {
     if (!isLocal) multiplayer.leaveRoom();
-    navigation.navigate('Lobby');
+    // Navigation is handled by GameHeader's back button; don't navigate here too.
   };
 
   const shakeTranslateY = shakeAnim.interpolate({
@@ -138,7 +138,7 @@ export default function RPSScreen({ route, navigation }: Props) {
     }
   };
 
-  const isMyTurn = isLocal ? (!currentState.p1Choice || (currentState.p1Choice && !currentState.p2Choice)) : (myPlayer === PLAYER_1 ? !currentState.p1Choice : !currentState.p2Choice);
+  const isMyTurn = !!(isLocal ? (!currentState.p1Choice || (currentState.p1Choice && !currentState.p2Choice)) : (myPlayer === PLAYER_1 ? !currentState.p1Choice : !currentState.p2Choice));
   const showControls = currentState.phase === 'choosing' && isMyTurn && (isLocal || multiplayer.opponent);
 
   return (

@@ -22,7 +22,7 @@ const STORAGE_KEY = 'gameverse_player';
 export const AVATARS = ['🦊', '🐼', '🦁', '🐲', '🦄', '🐺', '🦅', '🐙', '🦋', '🎮', '🚀', '⚡', '🔥', '💎', '🌟', '🎯'] as const;
 
 function generatePlayerId(): string {
-  return 'player_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+  return 'player_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
 export function PlayerProvider({ children }: { children: ReactNode }) {

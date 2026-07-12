@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -123,10 +123,11 @@ export default function LobbyScreen({ navigation }: Props) {
     navigation.navigate('Landing');
   };
 
-  if (!player) {
-    navigation.navigate('Landing');
-    return null;
-  }
+  useEffect(() => {
+    if (!player) navigation.navigate('Landing');
+  }, [player, navigation]);
+
+  if (!player) return null;
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bgPrimary }]}>

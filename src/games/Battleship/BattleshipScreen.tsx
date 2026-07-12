@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -60,6 +60,11 @@ export default function BattleshipScreen({ route, navigation }: Props) {
     ? { id: 2, name: 'Player 2', avatar: '🔵' }
     : multiplayer.isHost ? opponentInfo : myInfo;
 
+  // Tracks the id of the last pending shot we already resolved, so a local ship
+  // state update (which re-renders before Firebase echoes the cleared pendingShot
+  // back) can't make us resolve the same shot twice.
+  const resolvedShotRef = useRef<string | null>(null);
+
   // Generate random ships initially
   useEffect(() => {
     if (p1Ships.length === 0) setP1Ships(generateRandomPlacements());
@@ -72,6 +77,9 @@ export default function BattleshipScreen({ route, navigation }: Props) {
 
     // If opponent fired a shot, resolve it against my ships
     if (sharedState.pendingShot.player !== myPlayerNum) {
+      if (resolvedShotRef.current === sharedState.pendingShot.id) return;
+      resolvedShotRef.current = sharedState.pendingShot.id;
+
       const result = checkShotResult(sharedState.pendingShot.r, sharedState.pendingShot.c, myShips);
       
       const newMyShips = result.updatedShips;

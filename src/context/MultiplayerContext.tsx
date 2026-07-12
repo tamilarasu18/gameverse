@@ -8,6 +8,7 @@ import {
   remove,
   onValue,
   onDisconnect,
+  runTransaction,
   generateRoomCode,
   isFirebaseConfigured,
 } from '../config/firebase';
@@ -30,10 +31,10 @@ interface RoomData {
 
 type MultiplayerStatus = 'idle' | 'creating' | 'waiting' | 'joining' | 'playing' | 'error';
 
-interface MultiplayerContextType {
+interface MultiplayerContextType<T = any> {
   room: RoomData | null;
   roomCode: string;
-  gameState: any;
+  gameState: T | null;
   opponent: PlayerInfo | null;
   isHost: boolean;
   status: MultiplayerStatus;
@@ -41,7 +42,8 @@ interface MultiplayerContextType {
   online: boolean;
   createRoom: (gameType: string, player: PlayerInfo | null) => Promise<string | null>;
   joinRoom: (code: string, player: PlayerInfo | null) => Promise<boolean>;
-  updateGameState: (newState: any) => Promise<void>;
+  updateGameState: (newState: T) => Promise<void>;
+  mergeGameState: (updater: (prev: T | null) => T) => Promise<void>;
   leaveRoom: () => Promise<void>;
 }
 
@@ -79,8 +81,11 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
 
     try {
       let code = generateRoomCode();
-      const snapshot = await get(ref(database, `rooms/${code}`));
-      if (snapshot.exists()) code = generateRoomCode();
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const snapshot = await get(ref(database, `rooms/${code}`));
+        if (!snapshot.exists()) break;
+        code = generateRoomCode();
+      }
 
       const roomData: RoomData = {
         gameType,
@@ -188,6 +193,24 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
     }
   }, [online]);
 
+  // Concurrency-safe update: reads the freshest server value and applies `updater`
+  // inside a transaction, so simultaneous writers (e.g. both players placing during
+  // a shared setup phase) merge instead of clobbering each other.
+  const mergeGameState = useCallback(async (updater: (prev: any) => any) => {
+    if (!online || !database || !roomCodeRef.current) return;
+    try {
+      await runTransaction(
+        ref(database, `rooms/${roomCodeRef.current}/gameStateStr`),
+        (currStr: string | null) => {
+          const prev = currStr ? JSON.parse(currStr) : null;
+          return JSON.stringify(updater(prev));
+        }
+      );
+    } catch (err: any) {
+      console.error('Failed to merge game state:', err);
+    }
+  }, [online]);
+
   const leaveRoom = useCallback(async () => {
     cleanup();
     if (online && database && roomCodeRef.current) {
@@ -227,6 +250,7 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
     createRoom,
     joinRoom,
     updateGameState,
+    mergeGameState,
     leaveRoom,
   };
 
@@ -237,10 +261,10 @@ export function MultiplayerProvider({ children }: { children: React.ReactNode })
   );
 }
 
-export function useMultiplayer() {
+export function useMultiplayer<T = any>(): MultiplayerContextType<T> {
   const context = useContext(MultiplayerContext);
   if (!context) {
     throw new Error('useMultiplayer must be used within a MultiplayerProvider');
   }
-  return context;
+  return context as unknown as MultiplayerContextType<T>;
 }

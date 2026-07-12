@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getDatabase, ref, set, get, update, onValue, remove, onDisconnect, Database } from 'firebase/database';
+import { getDatabase, ref, set, get, update, onValue, remove, onDisconnect, runTransaction, Database } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -39,5 +39,5 @@ function generateRoomCode(): string {
   return code;
 }
 
-export { database, ref, set, get, update, onValue, remove, onDisconnect, generateRoomCode, isFirebaseConfigured };
+export { database, ref, set, get, update, onValue, remove, onDisconnect, runTransaction, generateRoomCode, isFirebaseConfigured };
 export default app;
