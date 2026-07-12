@@ -47,3 +47,5 @@ yarn-error.*
 # build artifacts
 *.apk
 *.aab
+/android/app/release/
+

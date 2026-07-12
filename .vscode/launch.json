@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Expo: Attach to Packager",
+      "type": "expo",
+      "request": "attach"
+    },
+    {
+      "name": "Expo: Debug Android",
+      "type": "expo",
+      "request": "launch",
+      "platform": "android"
+    },
+    {
+      "name": "Expo: Debug iOS",
+      "type": "expo",
+      "request": "launch",
+      "platform": "ios"
+    },
+    {
+      "name": "React Native: Debug Android",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnativedirect",
+      "request": "launch",
+      "platform": "android"
+    },
+    {
+      "name": "React Native: Attach to Packager",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnativedirect",
+      "request": "attach"
+    }
+  ]
+}
