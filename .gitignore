@@ -49,3 +49,5 @@ yarn-error.*
 *.aab
 /android/app/release/
 
+.vercel
+.env*
